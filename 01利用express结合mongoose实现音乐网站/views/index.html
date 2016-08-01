@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>音乐首页</title>
+	<link rel="stylesheet" href="/css/site.css">
+	
+	<script src='/js/jquery.js'></script>
+</head>
+<body>
+<table class="table">
+	<tr>
+		<th>编号</th>
+		<th>歌曲名称</th>
+		<th>歌曲文件名</th>
+		
+		<th>操作</th>
+	</tr>
+
+	{{#each(arr)}}
+	<tr>
+	<td>{{ xindex + 1 }}</td>
+	<td>{{ this.title }}</td>
+	<td>{{ this.file }}</td>
+	
+	<td>
+	<a href='javascript:void(0)' onclick='del("{{ this._id }}")'> 删除</a>
+	<a href='javascript:void(0)' onclick='play("{{ this.file }}")'> 播放</a>
+	</td>
+	</tr>
+  
+	{{/each}}
+</table>
+	
+	<audio id="audio" src='' autoplay='autoplay'></audio>
+</body>
+<script>
+   function play(musicName){
+   	//1.0 获取到audio对象
+   		var audObj = document.querySelector('audio');
+   		//2.0 动态改变audobj对象的src以后，浏览器就会自动发出其路径对于的请求
+   		audObj.src = '/mp3/'+musicName;
+   }
+
+
+   //删除文件
+   function del(dataid)
+   { 
+   	// http://127.0.0.1:8888/del?id=23423423  第一种传参方式
+      // $.get('/del','id='+dataid,function(resobj){
+      // 	 alert(resobj.message);
+      // 	 //刷新
+      // 	 window.location = window.location;
+
+      // },'json')
+      // Express中的第二种传值方式  http://127.0.0.1:8888/del/23423423 
+       $.get('/del/'+dataid,null,function(resobj){
+      	 alert(resobj.message);
+      	 //刷新
+      	 window.location = window.location;
+
+      },'json')
+   }
+</script>
+</html>
+
+
+<!-- npm i express mongoose xtpl xtemplate --save -->
